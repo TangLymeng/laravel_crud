@@ -71,9 +71,9 @@
                             <img src="{{ asset('images/' . $blog->image) }}" />
                             <p>{{$blog->category}}</p>
                             <div>
-                                <button class="btn btn-success" >
+                                <a href="{{route('blogs.edit', $blog->id)}}" class="btn btn-success" >
                                     <i class="fas fa-pencil-alt" ></i>
-                                </button>
+                                </a>
                                 <button class="btn btn-danger" >
                                     <i class="far fa-trash-alt"></i>
                                 </button>

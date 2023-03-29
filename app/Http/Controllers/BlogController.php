@@ -60,4 +60,35 @@ class BlogController extends Controller
         $blog->save();
         return redirect()->route('blogs.index')->with('success', 'Post created successfully.');
     }
+
+    public function edit($id)
+    {
+        $blog = Blog::findOrFail($id);
+        return view('blogs.edit', ['blog' => $blog]);
+    }
+
+    public function update(Request $request, Blog $blog)
+    {
+        $request -> validate([
+            'title' => 'required'
+        ]);
+
+        $file_name = $request->hidden_blog_image;
+        if ( $request->image != '' ) {
+            $request -> validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+            $file_name = time() . '.' . request()->image->getClientOriginalExtension();
+            request()->image->move(public_path('images'), $file_name);
+        }
+        $blog = Blog::find($request->hidden_id);
+
+        $blog->title = $request->title;
+        $blog->description = $request->description;
+        $blog->image = $file_name;
+        $blog->category = $request->category;
+
+        $blog->save();
+        return redirect()->route('blogs.index')->with('success', 'Post updated successfully.');
+    }
 }
