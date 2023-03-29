@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
-use App\Models\Post;
 
-class  PostController extends Controller
+class BlogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $blogs = "posts form in PostController";
-        return view('posts.index', ['posts' => $blogs]);
+        $blogs = "blogs form in PostController";
+        return view('blogs.index', ['blogs' => $blogs]);
     }
 
     /**
@@ -21,7 +21,7 @@ class  PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        return view('blogs.create');
     }
 
     /**
@@ -29,17 +29,17 @@ class  PostController extends Controller
      */
     public function store(Request $request)
     {
-        $post = new Post();
+        $blog = new Blog();
 
         $file_name = time() . '.' . request()->image->getClientOriginalExtension();
         request()->image->move(public_path('images'), $file_name);
 
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->image = $file_name;
-        $post->category = $request->category;
+        $blog->title = $request->title;
+        $blog->description = $request->description;
+        $blog->image = $file_name;
+        $blog->category = $request->category;
 
-        $post->save();
-        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+        $blog->save();
+        return redirect()->route('blogs.index')->with('success', 'Post created successfully.');
     }
 }

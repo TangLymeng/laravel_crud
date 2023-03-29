@@ -5,7 +5,7 @@
         <section>
             <div class="titlebar">
                 <h1>Blogs</h1>
-                <a href="{{route('posts.create')}}" class="btn-link"> Add Blog </a>
+                <a href="{{route('blogs.create')}}" class="btn-link"> Add Blog </a>
             </div>
             <div class="table">
                 <div class="table-filter">
