@@ -58,7 +58,7 @@ class BlogController extends Controller
         $blog->category = $request->category;
 
         $blog->save();
-        return redirect()->route('blogs.index')->with('success', 'Post created successfully.');
+        return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
     }
 
     public function edit($id)
@@ -89,6 +89,18 @@ class BlogController extends Controller
         $blog->category = $request->category;
 
         $blog->save();
-        return redirect()->route('blogs.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('blogs.index')->with('success', 'Blog updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $blog = Blog::findOrFail($id);
+        $image_path = public_path(). '/images/';
+        $image = $image_path . $blog->image;
+        if (file_exists($image)) {
+            @unlink($image);
+        }
+        $blog->delete();
+        return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully.');
     }
 }

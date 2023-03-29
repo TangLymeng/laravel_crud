@@ -70,13 +70,17 @@
                             <p>{{$blog->description}}</p>
                             <img src="{{ asset('images/' . $blog->image) }}" />
                             <p>{{$blog->category}}</p>
-                            <div>
+                            <div >
                                 <a href="{{route('blogs.edit', $blog->id)}}" class="btn btn-success" >
                                     <i class="fas fa-pencil-alt" ></i>
                                 </a>
-                                <button class="btn btn-danger" >
-                                    <i class="far fa-trash-alt"></i>
-                                </button>
+                                <form method="post" action=" {{ route('blogs.destroy', $blog->id) }} ">
+                                    @method('delete')
+                                    @csrf
+                                    <button class="btn btn-danger" onclick="deleteConfirm(event)">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </div>
                         @endforeach
                     @else
@@ -89,4 +93,23 @@
             </div>
         </section>
     </main>
+    <script>
+        window.deleteConfirm = function (event) {
+            event.preventDefault();
+            var form = event.target.form;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
+        }
+    </script>
 @endsection
