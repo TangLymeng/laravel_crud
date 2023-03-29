@@ -33,25 +33,32 @@
                 <div class="table-product-head">
                     <p>Id</p>
                     <p>Title</p>
-                    <p>Content</p>
+                    <p>Description</p>
                     <p>Image</p>
                     <p>Category</p>
                     <p>Action</p>
                 </div>
                 <div class="table-product-body">
-                    <p>1</p>
-                    <p>Lorem ipsum</p>
-                    <p> Product name</p>
-                    <p>Category</p>
-                    <p>Inventory</p>
-                    <div>
-                        <button class="btn btn-success" >
-                            <i class="fas fa-pencil-alt" ></i>
-                        </button>
-                        <button class="btn btn-danger" >
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </div>
+                    @if (count($blogs) > 0)
+                        @foreach ($blogs as $blog)
+                            <p>{{$blog->id}}</p>
+                            <p>{{$blog->title}}</p>
+                            <p>{{$blog->description}}</p>
+                            <img src="{{ asset('images/' . $blog->image) }}" />
+                            <p>{{$blog->category}}</p>
+                            <div>
+                                <button class="btn btn-success" >
+                                    <i class="fas fa-pencil-alt" ></i>
+                                </button>
+                                <button class="btn btn-danger" >
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        @endforeach
+
+                    @else
+
+                    @endif
                 </div>
                 <div class="table-paginate">
                     <div class="pagination">

@@ -12,7 +12,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = "blogs form in PostController";
+        $blogs = Blog::orderBy('created_at')->get();
         return view('blogs.index', ['blogs' => $blogs]);
     }
 
