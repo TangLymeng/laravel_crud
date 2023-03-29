@@ -7,6 +7,28 @@
                 <h1>Blogs</h1>
                 <a href="{{route('blogs.create')}}" class="btn-link"> Add Blog </a>
             </div>
+            @if($message = Session::get('success'))
+                <div>
+                    <script type="text/javascript">
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: '{{$message}}'
+                        })
+                    </script>
+                </div>
+            @endif
             <div class="table">
                 <div class="table-filter">
                     <div>
@@ -17,19 +39,21 @@
                         </ul>
                     </div>
                 </div>
-                <div class="table-search">
-                    <div>
-                        <button class="search-select">
-                            Search Blogs
-                        </button>
-                        <span class="search-select-arrow">
-                            <i class="fas fa-caret-down"></i>
-                        </span>
+                <form method="GET" action="{{ route('blogs.index') }}" accept-charset="UTF-8" role="search">
+                    <div class="table-search">
+                        <div>
+                            <button class="search-select">
+                                Search Blogs
+                            </button>
+                            <span class="search-select-arrow">
+                                <i class="fas fa-caret-down"></i>
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <input class="search-input" type="text" name="search" placeholder="Search blog..." value="{{ request('search') }}">
+                        </div>
                     </div>
-                    <div class="relative">
-                        <input class="search-input" type="text" name="search" placeholder="Search blog..." value="{{ request('search') }}">
-                    </div>
-                </div>
+                </form>
                 <div class="table-product-head">
                     <p>Id</p>
                     <p>Title</p>
@@ -55,19 +79,12 @@
                                 </button>
                             </div>
                         @endforeach
-
                     @else
-
+                        <p>No blogs found</p>
                     @endif
                 </div>
                 <div class="table-paginate">
-                    <div class="pagination">
-                        <a href="#" disabled>&laquo;</a>
-                        <a class="active-page">1</a>
-                        <a>2</a>
-                        <a>3</a>
-                        <a href="#">&raquo;</a>
-                    </div>
+                    {{ $blogs->links('layouts.pagination')}}
                 </div>
             </div>
         </section>

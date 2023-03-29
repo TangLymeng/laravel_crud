@@ -12,8 +12,19 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::orderBy('created_at')->get();
-        return view('blogs.index', ['blogs' => $blogs]);
+        $keyword = request()->get('search');
+        $perPage = 5;
+
+        if(!empty($keyword)) {
+            $blogs = Blog::where('title', 'LIKE', "%$keyword%")
+                ->orWhere('description', 'LIKE', "%$keyword%")
+                ->orWhere('image', 'LIKE', "%$keyword%")
+                ->orWhere('category', 'LIKE', "%$keyword%")
+                ->latest()->paginate($perPage);
+        } else {
+            $blogs = Blog::latest()->paginate($perPage);
+        }
+        return view('blogs.index', ['blogs' => $blogs])->with('i', (request()->input('page', 1) - 1) * $perPage);
     }
 
     /**
@@ -30,6 +41,13 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $blog = new Blog();
+
+        $request -> validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category' => 'required',
+        ]);
 
         $file_name = time() . '.' . request()->image->getClientOriginalExtension();
         request()->image->move(public_path('images'), $file_name);
